@@ -1,0 +1,22 @@
+# Vertrauliche Eingabe- und Ergebnisdateien
+*.pdf
+*.xlsx
+*.xls
+*.csv
+*.msg
+*.eml
+
+# Zugangsdaten und lokale Einstellungen
+.env
+.env.*
+*.key
+*.pem
+credentials.*
+secrets.*
+token.*
+
+# Temporäre Dateien
+~$*
+*.tmp
+*.log
+__pycache__/

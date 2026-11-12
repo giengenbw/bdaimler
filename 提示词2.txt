@@ -1,0 +1,1019 @@
+你是我的底盘采购文件对比、Python 调试和质量复核助手。
+
+请在当前可用执行环境中实际处理我上传的两份 PDF，运行基础程序及增强程序，交付真实生成的中文报告、德语报告、Excel 和完整 Python 程序。
+
+本补充规则优先于后文中与其冲突的规则。尤其注意：FG Prüfung 可能是扫描件，也可能包含红色删除线、Entfall、手写新增 Notiz、箭头、勾选和覆盖修改。不能只比较原始印刷代码集合。
+
+一、当前任务与输入确认
+
+1. 根据当前上传清单确定实际文件，不沿用旧项目文件名。
+2. 本次候选文件：
+   - FG Prüfung Kassel 2x.pdf
+   - Bestellung_Atego 1530 AF 4X4 V 08 - 2x StLF 20 Feuerwehr Kassel.pdf
+3. 读取封面、正文、日期、车型、配置编号和页面图像，确认文件角色。
+4. FG Prüfung 是技术检查参考文件的角色名称，不代表文件正文必然是最终批准的技术清单。
+5. 如果正文实际上是带人工标记的 Angebot，报告应明确写：
+   “带人工检查标记的报价文件，未据此确认最终技术批准状态。”
+6. 不得根据文件名、修改时间或订单较新就自动认定其内容正确。
+7. 不得覆盖原始 PDF。最终交付保存到 /mnt/data/ 根目录。
+
+二、基础代码完整性与真实执行
+
+1. 先检查用户提供的三个程序是否完整、是否能够通过语法检查。
+2. HTML 转义还原与代码损坏修复必须分开记录。
+3. 如果代码包含插入的 **、缺失字符、损坏变量名或不完整字符串：
+   - 保存用户提供的原始代码文本。
+   - 记录具体语法错误。
+   - 建立修复版独立脚本。
+   - 尽量保持原始提取逻辑、页码切片和比较逻辑。
+   - 不得声称损坏的原始代码已经成功运行。
+4. 无法可靠恢复的逻辑不得猜测。明确记录限制。
+5. 能恢复并执行时，基线应命名为：
+   “基础逻辑修复版基线”，而不是“未经修改的原始程序结果”。
+6. 基线、增强版、日志和修复记录分开保存。
+7. 实际运行程序，不得只提供代码或操作步骤。
+
+三、逐页判断扫描件和文字层质量
+
+必须检查两份 PDF 的所有页面。
+
+每页至少判断：
+- 是否存在文字层。
+- 文字层是否完整、可读且与页面图像一致。
+- 是否为扫描页。
+- 是否为文字与扫描图像混合页。
+- 是否存在人工标记。
+- 是否需要 OCR。
+- 是否已完成视觉复核。
+
+重要：
+“能提取文字”不等于“页面内容已经完整读取”。
+
+只有页眉、页脚或少量乱码可提取的页面，仍可能需要 OCR。
+已有隐藏 OCR 层的扫描件，也必须检查识别质量。
+
+四、OCR 与页面图像检查
+
+1. 对扫描页、低质量文字层页和疑似遗漏区域实际执行 OCR。
+2. 优先保留彩色原图，用于检查红线、颜色标记和手写内容。
+3. 页面通常按至少 300 dpi 渲染；细小代码或手写内容不清楚时，可提高分辨率并局部裁切。
+4. 灰度化、二值化、旋转纠正等只能用于 OCR 辅助副本。
+5. 不得用灰度图代替彩色原图判断红色删除线。
+6. 记录 OCR 工具、语言、分辨率、处理方式和识别结果。
+7. OCR 置信度如工具未提供，应留空并说明，不能自行编造。
+8. 手写内容不能可靠识别时，结合页面图像逐项复核。
+9. 若环境缺少 OCR 或视觉读取能力：
+   - 明确记录受影响页码和区域。
+   - 标为未验证。
+   - 不得将未识别内容视为不存在。
+   - 不得声称已完成全文核查。
+
+五、保留三层证据，不覆盖原文
+
+每个配置或要求至少分为三层：
+
+A. 原始印刷正文
+PDF 原本印刷的代码、描述、数量和技术数据。
+
+B. 人工修改证据
+Entfall、删除线、红线、Notiz、箭头、手写新增、数量修改等。
+
+C. 修改后参考要求
+仅在人工标记清楚、关联可靠时，形成用于核对订单的参考要求。
+
+不得直接删除被划掉的原始记录。
+不得用手写新增内容覆盖原始印刷描述。
+不得把人工修改自动认定为已批准的正式订单变更。
+
+六、人工标记必须同时检查两种来源
+
+1. 读取 PDF 原生注释对象：
+   - 注释文字。
+   - 注释类型。
+   - 位置。
+   - 删除线、自由文本、墨迹、箭头等。
+2. 检查页面图像中已经扁平化或扫描进去的标记：
+   - 红色删除线。
+   - 黑色删除线。
+   - 手写 Entfall。
+   - 新增 Notiz。
+   - 箭头和连接线。
+   - 覆盖修改。
+   - 圈选、勾选、问号。
+3. “没有 PDF 注释对象”不代表“没有人工标记”。
+4. 颜色、勾选或单条线段本身不能自动证明删除、批准或新增。
+5. 必须结合文字、位置、线条覆盖范围和上下文判断。
+
+七、Entfall 与删除线的判定
+
+必须区分以下情况：
+
+1. 印刷描述本身包含 Entfall 或 Wegfall
+例如：
+“Tachometer, Entfall Tachograf”
+这可能是配置描述，不是人工删除标记。
+
+2. 人工写出的 Entfall / entfällt / streichen / nicht erforderlich
+这是删除要求的候选证据，必须确认其关联对象。
+
+3. 清楚划过整条代码及描述的删除线
+可记录为“人工删除标记清楚”，但仍不自动代表正式批准。
+
+4. 仅划过部分描述
+只能记录被划掉的具体部分，不得自动删除整个代码。
+
+5. 红线位于行下方、旁边或跨越多行
+不得仅凭颜色认定删除。必须检查是下划线、分隔线、箭头还是删除线。
+
+6. 同一项目同时有删除和新增标记
+分别记录原项、删除证据、新项和关联关系。
+无法确定修改顺序时，标为冲突待确认。
+
+删除标记明确且关联可靠时：
+- 原始正文集合仍保留该项目。
+- 修改后参考集合中将其标为“删除要求”。
+- 若订单没有该项目，不能直接写“订单遗漏”。
+- 应写“订单未记载，与该删除标记方向一致；修改批准状态仍需确认”。
+- 若订单仍保留该项目，应写“订单仍记载被标注删除的项目，需核实删除要求是否应落实”。
+
+标记含义或关联不清楚时：
+- 不得从有效集合中静默移除。
+- 标为 NEEDS_MANUAL_REVIEW。
+- 明确说明不确定性对统计和结论的影响。
+
+八、新增 Notiz 的处理
+
+逐项识别：
+- 新增配置代码。
+- 新增无代码要求。
+- “fehlt”。
+- 数量要求。
+- 轮胎尺寸或型号修改。
+- 涂装修改。
+- 交付或附件要求。
+- 工艺要求。
+- 替代要求。
+- 条件性要求和疑问。
+
+关联规则：
+1. 优先依据明确箭头、连接线、代码引用或清楚的位置关系。
+2. 不得仅因“距离最近”就强行关联。
+3. 页边或页底的 Notiz 可能属于整车要求，不一定属于最近一行。
+4. 一个 Notiz 可以关联多个项目，但必须解释依据。
+5. 无法可靠关联时，保留为独立要求。
+
+“fehlt”表示检查时提出的缺项，不代表当前订单仍缺失。
+必须重新查找订单正文及其他明确记载。
+
+数量必须区分：
+- 每车数量。
+- 两辆车合计数量。
+- 额外增加数量。
+- 最终总数量。
+- 数量口径不明。
+
+例如：
+“1x extra”不能直接解释为总数量 1。
+“2. Warndreieck”不能未经确认直接解释为订单总数量 2。
+订单存在相关代码，也不代表新增数量要求已经落实。
+
+九、OCR 代码与描述的证据规则
+
+1. 同时保存：
+   - OCR_Raw_Code。
+   - Visually_Verified_Code。
+   - 原始描述。
+   - OCR 描述。
+   - 视觉复核后的转录。
+2. 不得自动互换 0/O、1/I、5/S 等字符。
+3. 订单中的代码只能作为复核线索，不能用于反向“修正”FG。
+4. 只有 FG 页面图像本身支持时，才可记录视觉核实后的代码。
+5. 所有修正必须记录原识别值、修正值、页码、位置和理由。
+6. 无法看清的字符保留不确定标记，不强行匹配。
+7. 支持代码独占一行、描述换行、标题与代码同一行。
+8. 不得将手写勾选、斜线或箭头识别为代码字符。
+9. 不得把轮胎型号、章节标题或页眉配置编号混入正式配置代码。
+
+十、两套比较结果必须分开
+
+第一套：原始印刷正文对比
+用于展示 FG 原始印刷配置与订单正文的差异。
+
+第二套：考虑人工修改后的参考要求核对
+用于展示删除、新增、替换、数量修改和其他 Notiz 是否在订单中体现。
+
+不得只交付其中一套。
+不得把两套统计混为一个“唯一代码数”。
+
+Summary 必须分别列出：
+- FG 原始印刷正文唯一代码数。
+- 订单正式配置唯一代码数。
+- 原始正文代码交集及双方独有数。
+- 明确人工删除涉及的代码数。
+- 明确人工新增涉及的代码数。
+- 无代码新增要求数。
+- 修改后参考要求中可确定的有效唯一代码数。
+- 无法确定是否保留的代码数。
+- 修改要求已体现、未找到、部分体现、无法确认的数量。
+
+若存在无法确定的修改：
+只报告可确定部分及待确认部分，不制造一个看似精确的最终集合。
+
+十一、修改要求的独立分类
+
+人工修改类型：
+- PRINTED_BASE_ITEM
+- MARKED_FOR_DELETION
+- HANDWRITTEN_ADDITION
+- REPLACEMENT_REQUEST
+- QUANTITY_CHANGE
+- NON_CODE_NOTE
+- CHECK_MARK_ONLY
+- AMBIGUOUS_MARK
+- CONFLICTING_MARKS
+
+订单落实状态：
+- REFLECTED_IN_ORDER
+- NOT_FOUND_IN_ORDER
+- PARTIALLY_REFLECTED
+- CANNOT_CONFIRM
+
+批准状态单独记录：
+- 文件中有明确批准证据。
+- 文件中未找到批准证据。
+- 无法确认。
+
+“订单已体现”与“修改已获批准”是两个不同判断。
+
+十二、来源字段与证据追溯
+
+每条正文或修改记录至少保存：
+- Source_File
+- PDF_Page
+- Printed_Page
+- Section
+- Code_Raw
+- Code_Verified
+- Description_Raw
+- Description_Normalized
+- Raw_Text
+- Extraction_Method
+- Bounding_Box
+- Mark_Type
+- Mark_Color
+- Mark_Text_Raw
+- Affected_Text
+- Associated_Code
+- Association_Basis
+- Reference_Interpretation
+- Approval_Status
+- Order_Evidence
+- Order_Implementation_Status
+- Review_Status
+- Uncertainty_Reason
+- Evidence_Image
+
+坐标应注明采用 PDF 坐标还是图像像素坐标。
+证据图片不得替代文字来源和页码。
+不得声称“人工复核”由真实人员完成，除非确有人员参与；应写“页面视觉复核”。
+
+十三、Excel 增加的工作表
+
+保留原有全部要求工作表，额外增加：
+- FG_Print_Base
+- FG_Marked_Changes
+- FG_Effective_Reference
+- Change_Implementation
+- OCR_Review
+- Visual_Evidence
+
+Details 增加：
+- Comparison_Layer
+- FG_Print_Status
+- FG_Modification_Status
+- Effective_Reference_Status
+- Approval_Status
+- Evidence_Image
+
+Annotations 同时包含：
+- PDF 原生注释。
+- 扫描或扁平化人工标记。
+- 手写 Notiz。
+
+无记录的工作表仍保留表头。
+正文配置、选装、删除要求和新增要求不得混入同一个未经区分的统计集合。
+
+十四、报告必须增加的章节
+
+中文和德语报告都增加：
+
+1. 扫描件、OCR 和页面视觉复核情况。
+2. FG 原始印刷正文与人工修改的区别。
+3. Entfall 和删除线逐项清单。
+4. 新增 Notiz 逐项清单。
+5. 修改要求在订单中的落实情况。
+6. 修改批准证据及其缺失情况。
+7. 无法识别或无法关联的标记。
+8. 原始正文比较与修改后参考比较的统计区别。
+
+每条删除或新增要求都展示：
+- 原始印刷内容。
+- 人工标记原文或客观图像描述。
+- 来源页码。
+- 关联依据。
+- 订单对应原文及页码。
+- 落实判断。
+- 不确定性。
+- 建议确认对象及具体问题。
+
+不得把“红线划掉”直接写成“正式取消”。
+不得把“手写新增”直接写成“订单已订”。
+不得把“代码匹配”写成“车辆完全符合要求”。
+
+十五、第二轮检查的补充要求
+
+最终文件生成后，重新打开并实际验证：
+
+1. 所有扫描页是否已处理或明确标为未验证。
+2. 所有有人工标记的页面是否已检查彩色图像。
+3. 所有 Entfall、删除线、新增 Notiz 是否逐项有记录。
+4. 所有 OCR 代码修正是否有页面图像依据。
+5. 是否误把印刷描述中的 Entfall 当作人工删除。
+6. 是否误把下划线、箭头或勾选当作删除。
+7. 是否误将被删除项判为订单遗漏。
+8. 是否漏查无代码新增要求。
+9. 是否混淆每车数量、额外数量和两车合计。
+10. 是否存在未明确批准但被写成正式批准的修改。
+11. 中文、德语、Excel 和聊天摘要是否使用相同统计口径。
+12. 原始正文集合的数量等式是否通过。
+13. 修改后参考集合如可确定，单独验证数量等式。
+14. 存在不确定项时，是否明确披露，未强行纳入确定结论。
+15. 每条差异和修改落实结论是否能回溯到原 PDF 页码及对应区域。
+
+结论必须明确：
+- 已确认的文件记载差异。
+- 已确认的人工修改证据。
+- 修改要求在订单中的体现情况。
+- 尚未确认的技术含义。
+- 尚未确认的批准状态。
+- 未完成的 OCR 或视觉核查范围。
+
+现在执行后文规定的基础程序、增强提取、双语报告、Excel 交付及第二轮复核。
+不要只给任务计划，不要编造执行结果，也不要用外部资料代替这两份 PDF 的证据。
+
+import pdfplumber
+import pandas as pd
+from pathlib import Path
+import re
+
+# =====================================
+# 输入文件
+# =====================================
+
+INPUT_FILE = "FG Prüfung Am Ettersberg.pdf"
+
+pdf_path = Path(INPUT_FILE)
+
+OUTPUT_FILE = pdf_path.with_name(
+    pdf_path.stem + "_DaimLER_FGPruefung.xlsx"
+)
+
+# =====================================
+# Daimler Code格式
+# =====================================
+
+CODE_RE = re.compile(
+    r'^[A-Z][A-Z0-9]{2,4}$'
+)
+
+HEADER_WORDS = [
+    "Vor Übergabe an Kunden",
+    "Seite",
+    "Albert Ziegler GmbH",
+    "Bestellung von"
+]
+
+END_WORDS = [
+    "Gesamtpreis Fahrzeug netto",
+    "Kaufpreis"
+]
+
+
+def clean(txt):
+
+    txt = txt.replace("\xa0", " ")
+    txt = re.sub(r"\s+", " ", txt)
+
+    return txt.strip()
+
+
+rows = []
+
+with pdfplumber.open(INPUT_FILE) as pdf:
+
+    # 配置页
+    for page in pdf.pages[1:20]:
+
+        text = page.extract_text()
+
+        if not text:
+            continue
+
+        lines = text.split("\n")
+
+        for line in lines:
+
+            line = clean(line)
+
+            if not line:
+                continue
+
+            if any(h in line for h in HEADER_WORDS):
+                continue
+
+            if any(e in line for e in END_WORDS):
+                break
+
+            # 去掉章节标题
+            if line.startswith("**"):
+                continue
+
+            # 识别：
+            # F1X S-Fahrerhaus ClassicSpace
+            m = re.match(
+                r'^([A-Z][A-Z0-9]{2,4})\s+(.+)$',
+                line
+            )
+
+            if not m:
+                continue
+
+            code = m.group(1)
+            desc = m.group(2)
+
+            if CODE_RE.match(code):
+
+                rows.append([
+                    code,
+                    desc
+                ])
+
+
+df = pd.DataFrame(
+    rows,
+    columns=[
+        "Code",
+        "Description"
+    ]
+)
+
+
+# =====================================
+# 输出
+# =====================================
+
+df.to_excel(
+    OUTPUT_FILE,
+    index=False
+)
+
+print(df.head())
+print()
+print("共识别:", len(df))
+print("Excel已生成:", OUTPUT_FILE)
+
+import pdfplumber
+import pandas as pd
+from pathlib import Path
+import re
+
+# =====================================
+# 输入文件
+# =====================================
+
+INPUT_FILE = "daimler.pdf"
+
+pdf_path = Path(INPUT_FILE)
+
+OUTPUT_FILE = pdf_path.with_name(
+    pdf_path.stem + "_Daimler_Bestellunterlagen.xlsx"
+)
+
+# =====================================
+# Daimler Code格式
+# =====================================
+
+CODE_RE = re.compile(
+    r'^[A-Z][A-Z0-9]{2,4}$'
+)
+
+HEADER_WORDS = [
+    "Vor Übergabe an Kunden",
+    "Seite",
+    "Albert Ziegler GmbH",
+    "Bestellung von"
+]
+
+END_WORDS = [
+    "Gesamtpreis Fahrzeug netto",
+    "Kaufpreis"
+]
+
+
+def clean(txt):
+
+    txt = txt.replace("\xa0", " ")
+    txt = re.sub(r"\s+", " ", txt)
+
+    return txt.strip()
+
+
+rows = []
+
+with pdfplumber.open(INPUT_FILE) as pdf:
+
+    # 配置页
+    for page in pdf.pages[1:6]:
+
+        text = page.extract_text()
+
+        if not text:
+            continue
+
+        lines = text.split("\n")
+
+        for line in lines:
+
+            line = clean(line)
+
+            if not line:
+                continue
+
+            if any(h in line for h in HEADER_WORDS):
+                continue
+
+            if any(e in line for e in END_WORDS):
+                break
+
+            # 去掉章节标题
+            if line.startswith("**"):
+                continue
+
+            # 识别：
+            # F1X S-Fahrerhaus ClassicSpace
+            m = re.match(
+                r'^([A-Z][A-Z0-9]{2,4})\s+(.+)$',
+                line
+            )
+
+            if not m:
+                continue
+
+            code = m.group(1)
+            desc = m.group(2)
+
+            if CODE_RE.match(code):
+
+                rows.append([
+                    code,
+                    desc
+                ])
+
+# =====================================
+# 去重
+# =====================================
+
+df = pd.DataFrame(
+    rows,
+    columns=[
+        "Code",
+        "Description"
+    ]
+)
+
+
+# =====================================
+# 输出
+# =====================================
+
+df.to_excel(
+    OUTPUT_FILE,
+    index=False
+)
+
+print(df.head())
+print()
+print("共识别:", len(df))
+print("Excel已生成:", OUTPUT_FILE)
+
+import pandas as pd
+from pathlib import Path
+from datetime import datetime
+import re
+import sys
+
+
+# ==================================================
+# 自动识别关键词
+# ==================================================
+
+BESTELL_KEYWORDS = [
+    "Daimler_Bestellunterlagen"
+]
+
+FG_KEYWORDS = [
+    "Daimler_FGPruefung",
+    "Daimler_FGPrüfung",
+    "Daimler_FGPrufung"
+]
+
+
+# ==================================================
+# 工具函数
+# ==================================================
+
+def clean_value(value):
+    """清理单元格内容"""
+    if pd.isna(value):
+        return ""
+
+    value = str(value).replace("\xa0", " ")
+    value = re.sub(r"\s+", " ", value)
+
+    return value.strip()
+
+
+def find_latest_xlsx_by_keywords(keywords):
+    """
+    自动查找当前文件夹中名称包含关键词的 xlsx 文件。
+    如果有多个，选择最后修改时间最新的一个。
+    """
+    candidates = []
+
+    for p in Path(".").glob("*.xlsx"):
+
+        if p.name.startswith("~$"):
+            continue
+
+        name_lower = p.name.lower()
+
+        for kw in keywords:
+            if kw.lower() in name_lower:
+                candidates.append(p)
+                break
+
+    if not candidates:
+        raise FileNotFoundError(
+            f"未找到名称包含以下关键词的xlsx文件: {keywords}"
+        )
+
+    # 选择最新修改的文件
+    candidates = sorted(
+        candidates,
+        key=lambda x: x.stat().st_mtime,
+        reverse=True
+    )
+
+    print("找到候选文件:")
+    for p in candidates:
+        print(" -", p.name)
+
+    print("使用文件:", candidates[0].name)
+    print()
+
+    return candidates[0]
+
+
+def find_column(df, possible_names):
+    """
+    自动识别列名
+    """
+    for name in possible_names:
+        if name in df.columns:
+            return name
+
+    raise ValueError(
+        f"未找到列名。候选列名: {possible_names}，实际列名: {list(df.columns)}"
+    )
+
+
+def build_code_dict(df, code_col, desc_col):
+    """
+    建立 Code -> Description 字典
+    保留第一次出现的 Code 顺序
+    """
+    result = {}
+
+    for _, row in df.iterrows():
+
+        code = clean_value(row.get(code_col, ""))
+
+        if not code:
+            continue
+
+        desc = clean_value(row.get(desc_col, ""))
+
+        if code not in result:
+            result[code] = desc
+
+    return result
+
+
+# ==================================================
+# 主程序
+# ==================================================
+
+def main():
+
+    # ==================================================
+    # 自动识别两个 Excel 文件
+    # ==================================================
+
+    bestell_file = find_latest_xlsx_by_keywords(
+        BESTELL_KEYWORDS
+    )
+
+    fg_file = find_latest_xlsx_by_keywords(
+        FG_KEYWORDS
+    )
+
+    print("Bestellunterlagen Excel:", bestell_file.name)
+    print("FG Prüfung Excel:", fg_file.name)
+    print()
+
+    # ==================================================
+    # 读取 Excel
+    # ==================================================
+
+    df_bestell = pd.read_excel(
+        bestell_file,
+        dtype=str,
+        engine="openpyxl"
+    )
+
+    df_fg = pd.read_excel(
+        fg_file,
+        dtype=str,
+        engine="openpyxl"
+    )
+
+    # ==================================================
+    # 自动识别列名
+    # ==================================================
+
+    bestell_code_col = find_column(
+        df_bestell,
+        ["Code", "VCode"]
+    )
+
+    bestell_desc_col = find_column(
+        df_bestell,
+        ["Description", "Beschreibung", "Name"]
+    )
+
+    fg_code_col = find_column(
+        df_fg,
+        ["Code", "VCode"]
+    )
+
+    fg_desc_col = find_column(
+        df_fg,
+        ["Description", "Beschreibung", "Name"]
+    )
+
+    print("Bestell Code列:", bestell_code_col)
+    print("Bestell Description列:", bestell_desc_col)
+    print("FG Code列:", fg_code_col)
+    print("FG Description列:", fg_desc_col)
+    print()
+
+    # ==================================================
+    # 建立字典
+    # ==================================================
+
+    bestell_dict = build_code_dict(
+        df_bestell,
+        bestell_code_col,
+        bestell_desc_col
+    )
+
+    fg_dict = build_code_dict(
+        df_fg,
+        fg_code_col,
+        fg_desc_col
+    )
+
+    bestell_codes = set(bestell_dict.keys())
+    fg_codes = set(fg_dict.keys())
+
+    # ==================================================
+    # 比较差异
+    # ==================================================
+
+    only_in_bestell = bestell_codes - fg_codes
+    only_in_fg = fg_codes - bestell_codes
+    matched = bestell_codes & fg_codes
+
+    # ==================================================
+    # 输出表：Only in Bestellunterlagen
+    # ==================================================
+
+    only_bestell_rows = []
+
+    for code in bestell_dict.keys():
+
+        if code in only_in_bestell:
+
+            only_bestell_rows.append({
+                "Code": code,
+                "Description": bestell_dict.get(code, "")
+            })
+
+    df_only_bestell = pd.DataFrame(
+        only_bestell_rows,
+        columns=[
+            "Code",
+            "Description"
+        ]
+    )
+
+    # ==================================================
+    # 输出表：Only in FG Prüfung
+    # ==================================================
+
+    only_fg_rows = []
+
+    for code in fg_dict.keys():
+
+        if code in only_in_fg:
+
+            only_fg_rows.append({
+                "Code": code,
+                "Description": fg_dict.get(code, "")
+            })
+
+    df_only_fg = pd.DataFrame(
+        only_fg_rows,
+        columns=[
+            "Code",
+            "Description"
+        ]
+    )
+
+    # ==================================================
+    # 输出表：Matched
+    # ==================================================
+
+    matched_rows = []
+
+    for code in bestell_dict.keys():
+
+        if code in matched:
+
+            matched_rows.append({
+                "Code": code,
+                "Bestellunterlagen_Description": bestell_dict.get(code, ""),
+                "FGPruefung_Description": fg_dict.get(code, "")
+            })
+
+    df_matched = pd.DataFrame(
+        matched_rows,
+        columns=[
+            "Code",
+            "Bestellunterlagen_Description",
+            "FGPruefung_Description"
+        ]
+    )
+
+    # ==================================================
+    # 详细对比表
+    # ==================================================
+
+    detail_rows = []
+
+    all_codes_ordered = []
+
+    for code in fg_dict.keys():
+        if code not in all_codes_ordered:
+            all_codes_ordered.append(code)
+
+    for code in bestell_dict.keys():
+        if code not in all_codes_ordered:
+            all_codes_ordered.append(code)
+
+    for code in all_codes_ordered:
+
+        in_fg = code in fg_codes
+        in_bestell = code in bestell_codes
+
+        if in_fg and in_bestell:
+            status = "MATCHED"
+        elif in_fg and not in_bestell:
+            status = "ONLY_IN_FG"
+        elif in_bestell and not in_fg:
+            status = "ONLY_IN_BESTELLUNTERLAGEN"
+        else:
+            status = "UNKNOWN"
+
+        detail_rows.append({
+            "Code": code,
+            "FGPruefung_Description": fg_dict.get(code, ""),
+            "Bestellunterlagen_Description": bestell_dict.get(code, ""),
+            "In_FGPruefung": "Ja" if in_fg else "Nein",
+            "In_Bestellunterlagen": "Ja" if in_bestell else "Nein",
+            "Status": status
+        })
+
+    df_details = pd.DataFrame(
+        detail_rows,
+        columns=[
+            "Code",
+            "FGPruefung_Description",
+            "Bestellunterlagen_Description",
+            "In_FGPruefung",
+            "In_Bestellunterlagen",
+            "Status"
+        ]
+    )
+
+    # ==================================================
+    # Summary
+    # ==================================================
+
+    df_summary = pd.DataFrame([
+        ["Bestellunterlagen文件", bestell_file.name],
+        ["FG Prüfung文件", fg_file.name],
+        ["Bestellunterlagen Code数量", len(bestell_codes)],
+        ["FG Prüfung Code数量", len(fg_codes)],
+        ["Matched数量", len(matched)],
+        ["Only in Bestellunterlagen数量", len(only_in_bestell)],
+        ["Only in FG Prüfung数量", len(only_in_fg)],
+        ["生成时间", datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+    ], columns=["项目", "值"])
+
+    # ==================================================
+    # 输出 Excel
+    # ==================================================
+
+    output_file = Path(
+        f"Vergleich_{fg_file.stem}_vs_{bestell_file.stem}.xlsx"
+    )
+
+    with pd.ExcelWriter(
+        output_file,
+        engine="openpyxl"
+    ) as writer:
+
+        df_summary.to_excel(
+            writer,
+            sheet_name="Summary",
+            index=False
+        )
+
+        df_only_fg.to_excel(
+            writer,
+            sheet_name="Only_in_FG",
+            index=False
+        )
+
+        df_only_bestell.to_excel(
+            writer,
+            sheet_name="Only_in_Bestell",
+            index=False
+        )
+
+        df_matched.to_excel(
+            writer,
+            sheet_name="Matched",
+            index=False
+        )
+
+        df_details.to_excel(
+            writer,
+            sheet_name="Details",
+            index=False
+        )
+
+    # ==================================================
+    # 控制台输出
+    # ==================================================
+
+    print("比较完成")
+    print("Excel已生成:", output_file)
+    print()
+    print("Bestellunterlagen Code数量:", len(bestell_codes))
+    print("FG Prüfung Code数量:", len(fg_codes))
+    print("Matched:", len(matched))
+    print("Only in Bestellunterlagen:", len(only_in_bestell))
+    print("Only in FG Prüfung:", len(only_in_fg))
+
+
+if __name__ == "__main__":
+
+    try:
+        main()
+
+    except Exception as e:
+        print("程序出错:")
+        print(e)
+        sys.exit(1)
